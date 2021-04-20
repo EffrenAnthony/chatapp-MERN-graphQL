@@ -1,37 +1,18 @@
-const { ApolloServer, gql } = require('apollo-server');
+const { ApolloServer } = require('apollo-server')
+const { resolvers } = require('./graphQL/resolvers')
+const { typeDefs } = require('./graphQL/typeDefs')
+const mongoose = require('mongoose')
+const { config } = require('./config/index')
 
+const server = new ApolloServer({ typeDefs, resolvers })
 
-const typeDefs = gql`
-  type Book {
-    title: String
-    author: String
-  }
-  type Query {
-    books: [Book]
-  }
-`;
-
-const books = [
-  {
-    title: 'The Awakening',
-    author: 'Kate Chopin',
-  },
-  {
-    title: 'City of Glass',
-    author: 'Paul Auster',
-  },
-];
-const resolvers = {
-  Query: {
-    books: () => books,
-  },
-};
-
-// The ApolloServer constructor requires two parameters: your schema
-// definition and your set of resolvers.
-const server = new ApolloServer({ typeDefs, resolvers });
-
-// The `listen` method launches a web server.
-server.listen().then(({ url }) => {
-  console.log(`🚀  Server ready at ${url}`);
-});
+mongoose.connect(config.mongodb, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false
+}).then(() => {
+  console.log('Mongo DB Connected')
+  return server.listen({ port: config.port }).then(({ url }) => {
+    console.log(`🚀  Server ready at ${url}`)
+  })
+}).catch(err => { console.log(err) })
