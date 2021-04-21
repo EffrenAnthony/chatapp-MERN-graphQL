@@ -1,10 +1,15 @@
-const { ApolloServer } = require('apollo-server')
+const { ApolloServer, PubSub } = require('apollo-server')
 const { resolvers } = require('./graphQL/resolvers')
 const { typeDefs } = require('./graphQL/typeDefs')
 const mongoose = require('mongoose')
 const { config } = require('./config/index')
 
-const server = new ApolloServer({ typeDefs, resolvers })
+const pubsub = new PubSub()
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  context: ({ req }) => ({ req, pubsub })
+})
 
 mongoose.connect(config.mongodb, {
   useNewUrlParser: true,
