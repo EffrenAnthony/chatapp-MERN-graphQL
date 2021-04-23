@@ -1,10 +1,16 @@
 const userResolvers = require('./users/index')
+const messageResolvers = require('./message/index')
 const resolvers = {
+  // Message: {
+  //   createdAt: (parent) => parent.createdAt.toISOString()
+  // },
   Query: {
-    ...userResolvers.Query
+    ...userResolvers.Query,
+    ...messageResolvers.Query
   },
   Mutation: {
-    ...userResolvers.Mutation
+    ...userResolvers.Mutation,
+    ...messageResolvers.Mutation
   }
 }
 
