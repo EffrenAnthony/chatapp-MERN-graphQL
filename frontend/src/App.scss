@@ -1,0 +1,15 @@
+$blue: rgba(111, 58, 180, 0.9);
+$green :rgba(220, 85, 247, 0.9);
+$border-radius: 0;
+// check on node_modules/bootstrap/scss/_variables
+@import "~bootstrap/scss/bootstrap";
+
+body{
+  min-height: 100vh;
+  background: linear-gradient(
+    203deg, 
+    rgba(111, 58, 180, 0.9) 0%, 
+    rgba(133, 112, 161, 0.9) 50%,
+    rgba(238, 234, 227, 0.9) 100%
+  );
+}
