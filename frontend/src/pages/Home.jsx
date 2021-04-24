@@ -1,9 +1,32 @@
 import React from 'react'
+import { Row, Button } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
+import { Messages } from '../components/Messages'
+import { Users } from '../components/Users'
+import { useAuthDispatch } from '../context/auth'
 
-export const Home = () => {
+export const Home = ({ history }) => {
+  const dispatch = useAuthDispatch()
+  const logout = () => {
+    dispatch({ type: 'LOGOUT' })
+    history.push('/login')
+  }
+
   return (
     <>
-      <h1>Home</h1>
+      <Row className='bg-white justify-content-around mb-1'>
+        <Link to='/login'>
+          <Button variant='link'>Login</Button>
+        </Link>
+        <Link to='/register'>
+          <Button variant='link'>Register</Button>
+        </Link>
+        <Button variant='link' onClick={logout}>Logout</Button>
+      </Row>
+      <Row className='bg-white'>
+        <Users />
+        <Messages />
+      </Row>
     </>
   )
 }

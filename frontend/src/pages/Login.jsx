@@ -3,6 +3,7 @@ import { useMutation } from '@apollo/client'
 import { Row, Col, Form, Button, Alert } from 'react-bootstrap'
 import { LOGIN_USER } from '../graphql/Mutations'
 import { Link } from 'react-router-dom'
+import { useAuthDispatch } from '../context/auth'
 
 export const Login = (props) => {
   const [variables, setVariables] = useState({
@@ -11,10 +12,11 @@ export const Login = (props) => {
     password: '',
     confirmPassword: ''
   })
+  const dispatch = useAuthDispatch()
   const [errors, setErrors] = useState({})
   const [loginUser, { loading }] = useMutation(LOGIN_USER, {
-    update: (_, { data: { login: { token } } }) => {
-      window.sessionStorage.setItem('token', token)
+    update: (_, { data: { login } }) => {
+      dispatch({ type: 'LOGIN', payload: login })
       props.history.push('/')
     },
     onError: (err) => {

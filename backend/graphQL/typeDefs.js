@@ -7,6 +7,7 @@ const typeDefs = gql`
     token: String!
     username: String!
     createdAt: String!
+    latestMessage: Message
   }
   type Message {
     id: ID!

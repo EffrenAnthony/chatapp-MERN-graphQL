@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const { UserInputError, AuthenticationError } = require('apollo-server')
 const User = require('../../models/User')
+const Message = require('../../models/message')
 const { validateRegisterInput, validateLoginInput } = require('../../util/validators')
 const { config } = require('../../config')
 
@@ -27,7 +28,17 @@ module.exports = {
             user = decodedToken
           })
         }
-        const users = await User.find({ username: { $ne: user.username } })
+        let users = await User.find({ username: { $ne: user.username } })
+        // get the latestMessage
+        const allUsersMessages = await Message.find({ $or: [{ from: user.username }, { to: user.username }] }).sort({ createdAt: -1 })
+
+        users = users.map(otherUser => {
+          const latestMessage = allUsersMessages.find(
+            m => m.from === otherUser.username || m.to === otherUser.username
+          )
+          otherUser.latestMessage = latestMessage
+          return otherUser
+        })
         return users
       } catch (e) {
         console.log(e)

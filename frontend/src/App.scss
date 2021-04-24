@@ -1,6 +1,8 @@
 $blue: rgba(111, 58, 180, 0.9);
 $green :rgba(220, 85, 247, 0.9);
 $border-radius: 0;
+$paragraph-margin-bottom: 0;
+$gray-600: rgba(245, 245, 245, 1 );
 // check on node_modules/bootstrap/scss/_variables
 @import "~bootstrap/scss/bootstrap";
 
@@ -12,4 +14,8 @@ body{
     rgba(133, 112, 161, 0.9) 50%,
     rgba(238, 234, 227, 0.9) 100%
   );
+}
+
+.user-div:hover {
+  background-color: rgb(250, 250, 250) 
 }
