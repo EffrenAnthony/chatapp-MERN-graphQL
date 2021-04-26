@@ -9,7 +9,8 @@ export const Home = ({ history }) => {
   const dispatch = useAuthDispatch()
   const logout = () => {
     dispatch({ type: 'LOGOUT' })
-    history.push('/login')
+    // ? de esta manera evitamos que se queden guardados datos en cache y vuelva a hacer fetch de los datos del nuevo usuario
+    window.location.href = '/login'
   }
 
   return (

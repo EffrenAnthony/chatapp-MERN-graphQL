@@ -25,16 +25,15 @@ export const Users = () => {
       return (
         <div
           role='button'
-          className={classNames('d-flex p-3 user-div', { 'bg-white': seleted })}
+          className={classNames('d-flex p-3 user-div justify-content-center justify-content-md-start', { 'bg-white': seleted })}
           key={user.username}
           onClick={() => dispatch({ type: 'SET_SELECTED_USER', payload: user.username })}
         >
           <Image
             src={gravatar(user.email)}
-            roundedCircle className='mr-2'
-            style={{ width: 50, height: 50, objectFit: 'cover' }}
+            className='user-image'
           />
-          <div>
+          <div className='d-none d-md-block ml-2 '>
             <p className='text-success'>{user.username}</p>
             <p className='font-weight-light'>{user.latestMessage ? user.latestMessage.content : 'You are not conected'}</p>
           </div>
@@ -43,7 +42,7 @@ export const Users = () => {
     })
   }
   return (
-    <Col xs={4} className='p-0 bg-secondary'>
+    <Col xs={2} md={4} className='p-0 bg-secondary'>
       {usersMarkup}
     </Col>
   )
