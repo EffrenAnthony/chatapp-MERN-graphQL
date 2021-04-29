@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "name": "chat-graphql",
+  "alias": ["chat-graphql"],
+  "builds": [{ "src": "index.js", "use": "@vercel/node" }],
+  "routes": [{
+    "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+        "Access-Control-Allow-Headers": "X-Requested-With, Content-Type, Accept"
+    },
+    "src": "/.*", "dest": "index.js" }
+  ],
+  "env": {
+    "DB_USER": "@chat-db-user",
+    "DB_PASSWORD": "@chat-db-password",
+    "DB_HOST": "@chat-db-host",
+    "DB_NAME": "@chat-db-name",
+    "MONGODB": "@chat-db-mongo"
+  }
+}
