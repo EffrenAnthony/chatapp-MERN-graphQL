@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const { UserInputError, AuthenticationError } = require('apollo-server')
-const User = require('../../models/User')
+const User = require('../../models/user')
 const Message = require('../../models/message')
 const { validateRegisterInput, validateLoginInput } = require('../../util/validators')
 const { config } = require('../../config')

@@ -17,7 +17,8 @@ mongoose.connect(config.mongodb, {
   useFindAndModify: false
 }).then(() => {
   console.log('Mongo DB Connected')
-  return server.listen({ port: config.port })
-}).then(({ url }) => {
-  console.log(`🚀  Server ready at ${url}`)
+  return server.listen({ port: config.port }).then(({ url, subscriptionsUrl }) => {
+    console.log(`🚀  Server ready at ${url}`)
+    console.log(`🚀  WebSocket at ${subscriptionsUrl}`)
+  })
 }).catch(err => { console.log(err) })

@@ -16,6 +16,13 @@ const typeDefs = gql`
     to: String!
     createdAt: String!
   }
+  type Reaction {
+    id: ID!
+    content: String!
+    createdAt: String!
+    message: Message!
+    user: User!
+  }
   type Query {
     getUsers: [User]!
     getMessages(from: String!): [Message]!
@@ -30,9 +37,11 @@ const typeDefs = gql`
     register(registerInput: RegisterInput): User!
     login(username: String!, password: String!): User!
     sendMessage(to: String!, content: String!): Message!
+    reactToMessage(id: String! content: String!): Reaction!
   }
   type Subscription{
     newMessage: Message!
+    newReaction: Reaction!
   }
 `
 module.exports = { typeDefs }
