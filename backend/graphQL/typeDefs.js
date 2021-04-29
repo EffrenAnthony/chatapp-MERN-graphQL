@@ -31,5 +31,8 @@ const typeDefs = gql`
     login(username: String!, password: String!): User!
     sendMessage(to: String!, content: String!): Message!
   }
+  type Subscription{
+    newMessage: Message!
+  }
 `
 module.exports = { typeDefs }

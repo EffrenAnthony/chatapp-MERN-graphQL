@@ -1,5 +1,5 @@
 import React from 'react'
-import classNames from 'classNames'
+import classNames from 'classnames'
 import { useAuthState } from '../context/auth'
 import { OverlayTrigger, Tooltip } from 'react-bootstrap'
 import moment from 'moment'

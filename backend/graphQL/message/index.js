@@ -1,7 +1,7 @@
 const Message = require('../../models/message')
 const checkAuth = require('../../util/check-auth')
 const User = require('../../models/User')
-const { UserInputError } = require('apollo-server')
+const { UserInputError, AuthenticationError, withFilter } = require('apollo-server')
 
 module.exports = {
   Query: {
@@ -25,26 +25,49 @@ module.exports = {
   },
   Mutation: {
     sendMessage: async (_, { to, content }, context) => {
-      const user = checkAuth(context)
-      const recipient = await User.findOne({ username: to })
-      console.log(recipient)
-      if (!recipient) {
-        throw new UserInputError('User not found')
-      } else if (recipient.username === user.username) {
-        throw new UserInputError('You cant message yourself')
+      try {
+        const user = checkAuth(context)
+        const recipient = await User.findOne({ username: to })
+        console.log(recipient)
+        if (!recipient) {
+          throw new UserInputError('User not found')
+        } else if (recipient.username === user.username) {
+          throw new UserInputError('You cant message yourself')
+        }
+        if (content.trim() === '') {
+          throw new Error('post body must not be empty')
+        }
+        const newMessage = new Message({
+          content,
+          to,
+          user: user.id,
+          from: user.username,
+          createdAt: new Date().toISOString()
+        })
+        const message = await newMessage.save()
+
+        context.pubsub.publish('NEW_MESSAGE', { newMessage: message })
+        return message
+      } catch (err) {
+        console.log(err)
+        throw err
       }
-      if (content.trim() === '') {
-        throw new Error('post body must not be empty')
-      }
-      const newMessage = new Message({
-        content,
-        to,
-        user: user.id,
-        from: user.username,
-        createdAt: new Date().toISOString()
+    }
+  },
+  Subscription: {
+    newMessage: {
+      subscribe: withFilter((_, __, context) => {
+        const user = checkAuth(context)
+        if (!user) throw new AuthenticationError('Unauthenticated')
+        return context.pubsub.asyncIterator(['NEW_MESSAGE'])
+      }, ({ newMessage }, _, context) => {
+        const user = checkAuth(context)
+        if (newMessage.from === user.username || newMessage.to === user.username) {
+          return true
+        } else {
+          return false
+        }
       })
-      const message = await newMessage.save()
-      return message
     }
   }
 }

@@ -40,3 +40,11 @@ export const LOGIN_USER = gql`
     }
   }
 `
+
+export const SEND_MESSAGE = gql`
+  mutation sendMessage($to: String!, $content: String!){
+    sendMessage(to: $to, content: $content){
+      id from to content createdAt
+    }
+  }
+`

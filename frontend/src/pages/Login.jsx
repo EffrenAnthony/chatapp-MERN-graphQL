@@ -17,7 +17,8 @@ export const Login = (props) => {
   const [loginUser, { loading }] = useMutation(LOGIN_USER, {
     update: (_, { data: { login } }) => {
       dispatch({ type: 'LOGIN', payload: login })
-      props.history.push('/')
+      // props.history.push('/')
+      window.location.href = '/'
     },
     onError: (err) => {
       console.log(err.graphQLErrors[0].extensions.errors)

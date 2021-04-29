@@ -1,14 +1,39 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Row, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { Messages } from '../components/Messages'
 import { Users } from '../components/Users'
-import { useAuthDispatch } from '../context/auth'
+import { useAuthDispatch, useAuthState } from '../context/auth'
+import { useMessageDispatch } from '../context/message'
+import { useSubscription } from '@apollo/client'
+import { NEW_MESSAGE } from '../graphql/Subscriptions'
 
 export const Home = ({ history }) => {
-  const dispatch = useAuthDispatch()
+  const authDispatch = useAuthDispatch()
+  const messageDispatch = useMessageDispatch()
+  const { user } = useAuthState()
+
+  const { data: messageData, error: messageError } = useSubscription(
+    NEW_MESSAGE
+  )
+  useEffect(() => {
+    if (messageError) console.log(messageError)
+
+    if (messageData) {
+      const message = messageData.newMessage
+      const otherUser = user.username === message.to ? message.from : message.to
+
+      messageDispatch({
+        type: 'ADD_MESSAGE',
+        payload: {
+          username: otherUser,
+          message
+        }
+      })
+    }
+  }, [messageError, messageData])
   const logout = () => {
-    dispatch({ type: 'LOGOUT' })
+    authDispatch({ type: 'LOGOUT' })
     // ? de esta manera evitamos que se queden guardados datos en cache y vuelva a hacer fetch de los datos del nuevo usuario
     window.location.href = '/login'
   }
