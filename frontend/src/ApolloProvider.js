@@ -6,8 +6,8 @@ import { WebSocketLink } from '@apollo/client/link/ws'
 import { getMainDefinition } from '@apollo/client/utilities'
 
 const httpLink = createHttpLink({
-  uri: 'http://localhost:4000'
-  // uri: 'https://chat-graphql-backend.vercel.app/'
+  // uri: 'http://localhost:4000'
+  uri: 'https://chat-graphql-backend.vercel.app/'
 })
 const authMiddleware = new ApolloLink((operation, forward) => {
   const token = window.sessionStorage.getItem('token')
@@ -23,8 +23,9 @@ const authMiddleware = new ApolloLink((operation, forward) => {
 
 // httpLink = authMiddleware.concat(httpLink)
 const wsLink = new WebSocketLink({
-  // uri: 'ws://chat-graphql-backend.vercel.app/graphql',
-  uri: 'ws://localhost:4000/graphql',
+  uri: 'ws://chat-graphql-backend.vercel.app',
+  // uri: 'ws://localhost:4000/graphql',
+  // uri: 'ws://localhost:4000',
   options: {
     reconnect: true,
     connectionParams: {

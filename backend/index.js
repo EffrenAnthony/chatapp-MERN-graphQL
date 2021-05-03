@@ -8,7 +8,8 @@ const pubsub = new PubSub()
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({ req, connection }) => ({ req, pubsub, connection })
+  context: ({ req, connection }) => ({ req, pubsub, connection }),
+  subscriptions: { path: '/' }
 })
 
 mongoose.connect(config.mongodb, {
