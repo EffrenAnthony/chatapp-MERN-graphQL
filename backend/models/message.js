@@ -9,7 +9,13 @@ const messageSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
     ref: 'users'
-  }
+  },
+  reactions: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'reactions'
+    }
+  ]
 })
 
 module.exports = model('Message', messageSchema)

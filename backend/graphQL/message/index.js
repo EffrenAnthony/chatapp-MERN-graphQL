@@ -17,6 +17,7 @@ module.exports = {
         const messages = await Message.find({
           from: usernames,
           to: usernames
+          // reactions: { $exists: Reaction }
         }).sort({ createdAt: -1 })
         return messages
       } catch (err) {

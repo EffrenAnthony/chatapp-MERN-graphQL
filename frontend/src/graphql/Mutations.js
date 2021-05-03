@@ -48,3 +48,11 @@ export const SEND_MESSAGE = gql`
     }
   }
 `
+
+export const REACT_TO_MESSAGE = gql`
+  mutation reactToMessage($id: String!, $content: String!){
+    reactToMessage(id: $id, content: $content){
+      id
+    }
+  }
+`
