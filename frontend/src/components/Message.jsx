@@ -14,6 +14,8 @@ export const Message = ({ message }) => {
   const sent = message.from === user.username
   const received = !sent
   const [showPopover, setShowPopover] = useState(false)
+  const reactionIncons = [...new Set(message.reactions.map((r) => r.content))]
+
   const [reactToMessage] = useMutation(REACT_TO_MESSAGE, {
     onError: err => console.log(err),
     onCompleted: (data) => {
@@ -65,11 +67,15 @@ export const Message = ({ message }) => {
       }
         transition={false}
       >
-        <div className={classNames('py-2 px-3 rounded-pill', {
+        <div className={classNames('py-2 px-3 rounded-pill position-relative', {
           'bg-primary': sent,
           'bg-secondary': received
         })}
         >
+          {message.reactions.length > 0 &&
+            <div className='reactions-div  bg-secondary p-1 rounded-pill'>
+              {reactionIncons} {message.reactions.length}
+            </div>}
           <p className={classNames({ 'text-white': sent })} key={message.id}>{message.content}</p>
         </div>
       </OverlayTrigger>

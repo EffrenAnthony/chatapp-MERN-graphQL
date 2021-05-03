@@ -30,7 +30,7 @@ export const Users = () => {
           onClick={() => dispatch({ type: 'SET_SELECTED_USER', payload: user.username })}
         >
           <Image
-            src={gravatar(user.email)}
+            src={gravatar(user.email) || 'https://electronicssoftware.net/wp-content/uploads/user.png'}
             className='user-image'
           />
           <div className='d-none d-md-block ml-2 '>

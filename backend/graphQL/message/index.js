@@ -11,7 +11,7 @@ module.exports = {
       try {
         const user = checkAuth(context)
         const otherUser = await User.findOne({ username: from })
-        console.log(otherUser)
+        // console.log(otherUser)
         if (!otherUser) throw new UserInputError('User not found')
         const usernames = [user.username, otherUser.username]
         const messages = await Message.find({
@@ -75,6 +75,7 @@ module.exports = {
         }
 
         let reaction = await Reaction.findOne({ message: message._id, user: user._id })
+        console.log(message)
         if (reaction) {
           reaction.content = content
           await reaction.save()
@@ -86,6 +87,17 @@ module.exports = {
             createdAt: new Date().toISOString()
           }).save()
         }
+        if (message.reactions) {
+          message.reactions.push(reaction)
+          await message.save()
+        } else {
+          const newReactions = []
+          message.reactions = newReactions.push(reaction)
+          await message.save()
+        }
+        // await new Message({
+        //   reactions: reaction
+        // }).save()
 
         context.pubsub.publish('NEW_REACTION', { newReaction: reaction })
         return reaction

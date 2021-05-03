@@ -11,3 +11,17 @@ export const NEW_MESSAGE = gql`
   }
 }
 `
+
+export const NEW_REACTION = gql`
+  subscription newReaction {
+    newReaction {
+      id
+      content
+      message{
+        id
+        from
+        to  
+      }
+    }
+  }
+`
